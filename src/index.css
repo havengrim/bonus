@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --sidebar-background: 210 10% 20%; /* Medium gray background for light mode */
+    --sidebar-foreground: 210 25% 95%; /* Dark gray for text */
+    --sidebar-primary: 210 60% 40%; /* Blue primary color */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 210 70% 85%; /* Light grayish-blue accent */
+    --sidebar-accent-foreground: 210 25% 20%;
+    --sidebar-border: 210 35% 80%; /* Light gray-blue for borders */
+    --sidebar-ring: 210 70% 60%; /* Vivid blue for interactive elements */
+  }
+
+  .dark {
+    --sidebar-background: 210 10% 30%; /* Medium gray for dark mode */
+    --sidebar-foreground: 210 15% 85%; /* Lighter text color for contrast */
+    --sidebar-primary: 210 45% 35%; /* Muted blue-gray for primary elements in dark mode */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 50% 30%; /* Darker gray for accents in dark mode */
+    --sidebar-accent-foreground: 210 15% 85%;
+    --sidebar-border: 210 35% 30%;
+    --sidebar-ring: 210 70% 50%;
+  }
+}
