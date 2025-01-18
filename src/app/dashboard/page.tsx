@@ -190,7 +190,9 @@ export default function Page() {
                     currentData.map((row, index) => (
                       <tr key={index} className="border-b dark:border-gray-700">
                         <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 w-1/3">{row.name}</td>
-                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 w-1/3">{row.startDate}</td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 w-1/3">
+                          {typeof row.startDate === 'string' ? row.startDate : row.startDate.toLocaleDateString()}
+                        </td>
                         <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 w-1/3">{formatNumber(row.totalIncentive)}</td>
                       </tr>
                     ))
