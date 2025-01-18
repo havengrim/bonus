@@ -60,8 +60,8 @@ const data = {
           url: "/page",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "CNA",
+          url: "/cna",
         },
         {
           title: "Settings",
