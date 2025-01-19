@@ -173,6 +173,11 @@ app.get('/admin', authenticate, isAdmin, (req, res) => {
   res.send('Welcome Admin');
 });
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
+});
+
+
 // Example protected route that only the user can access
 app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
