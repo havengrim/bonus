@@ -17,16 +17,24 @@ app.use((req, res, next) => {
 app.use(cors());  // Enable CORS
 
 // Database connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000  // Timeout after 30 seconds
+})
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
-
-// Role schema and model
-const roleSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-});
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);  // Exit process with failure if connection fails
+  });
 
 const Role = mongoose.model('Role', roleSchema);
+
+Role.findOne({ name: roleName }).catch(err => {
+  console.error('Error finding role:', err);
+  res.status(500).send('Internal server error');
+});
+
 
 // Sequence schema and model to manage user ids
 const sequenceSchema = new mongoose.Schema({
