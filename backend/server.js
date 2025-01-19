@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+module.exports.handler = serverless(app); 
 // Middleware
 app.use(express.json());
 app.use(cors());  // Enable CORS
@@ -175,3 +175,5 @@ app.get('/admin', authenticate, isAdmin, (req, res) => {
 app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
+
+module.exports = app;
