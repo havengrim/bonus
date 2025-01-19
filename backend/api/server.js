@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 app.use(cors());  // Enable CORS
 
 // Database connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('MongoDB connection error:', err));
 
@@ -178,7 +178,12 @@ app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
 
+<<<<<<< HEAD:backend/server.js
 // Start the Express server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+=======
+// Export the serverless handler as the default export
+module.exports = serverless(app);  // Default export for Vercel compatibility
+>>>>>>> 8308405dfef254867f075bfacee4219d53544b20:backend/api/server.js
