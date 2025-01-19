@@ -30,10 +30,6 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const Role = mongoose.model('Role', roleSchema);
 
-Role.findOne({ name: roleName }).catch(err => {
-  console.error('Error finding role:', err);
-  res.status(500).send('Internal server error');
-});
 
 
 // Sequence schema and model to manage user ids
