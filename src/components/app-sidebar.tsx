@@ -64,8 +64,8 @@ const data = {
           url: "/cna",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Gratuity",
+          url: "/gratuity",
         },
       ],
     },
