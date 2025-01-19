@@ -4,10 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
+const serverless = require('serverless-http'); // Import serverless-http
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-module.exports.handler = serverless(app); 
+
 // Middleware
 app.use(express.json());
 app.use(cors());  // Enable CORS
@@ -92,9 +93,7 @@ const createDefaultRoles = async () => {
 
 // Create default roles before starting the server
 createDefaultRoles().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  console.log('Default roles created');
 });
 
 // Helper function to get the next user id
@@ -176,4 +175,5 @@ app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
 
-module.exports = app;
+// Export the serverless handler
+module.exports.handler = serverless(app);
