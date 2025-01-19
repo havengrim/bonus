@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,17 +6,63 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AiFillApple } from "react-icons/ai"; // Apple icon
 import { FaGoogle, FaFacebook } from "react-icons/fa"; // Google and Meta (Facebook) icons
-import { Link } from "react-router-dom";
+
+interface LoginFormProps {
+  className?: string;
+  [key: string]: any;
+}
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: LoginFormProps) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  // Handle form submission
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(""); // Reset error message before each attempt
+
+    // Simple validation for empty fields
+    if (!username || !password) {
+      setError("Both fields are required");
+      return;
+    }
+
+    try {
+      // Make an API call to your backend for login
+      const response = await fetch("http://localhost:3000/login", { // Update with your API endpoint
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Handle successful login (e.g., store JWT in local storage)
+        localStorage.setItem("token", data.token); // Store the JWT token in localStorage
+        // Redirect user after successful login (e.g., to the dashboard)
+        window.location.href = "/page"; // Update this to where you want to redirect the user
+      } else {
+        // Handle error (e.g., show message)
+        setError(data.message || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error("Error during login:", err);
+      setError("An error occurred while logging in");
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleLogin}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -23,13 +70,15 @@ export function LoginForm({
                   Login to your Acme Inc account
                 </p>
               </div>
+              {error && <div className="text-red-500 text-sm">{error}</div>} {/* Show error message */}
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                 
+                  id="username"
+                  type="text"
+                  placeholder="Your Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -42,13 +91,16 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
-              <Link to="/page">
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
-              </Link>
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-neutral-200 dark:after:border-neutral-800">
                 <span className="relative z-10 bg-white px-2 text-neutral-500 dark:bg-neutral-950 dark:text-neutral-400">
                   Or continue with
@@ -69,7 +121,7 @@ export function LoginForm({
                 </Button>
               </div>
               <div className="text-center text-sm">
-                Don&apos;t have an account?{""}
+                Don&apos;t have an account?{" "}
                 <a href="#" className="underline underline-offset-4">
                   Sign up
                 </a>
@@ -86,7 +138,7 @@ export function LoginForm({
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-neutral-500 [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-neutral-900 dark:text-neutral-400 dark:hover:[&_a]:text-neutral-50">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{""}
+        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
       </div>
     </div>
