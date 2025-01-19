@@ -27,9 +27,9 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
+    name: "JONH DOE",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "https://tse3.mm.bing.net/th?id=OIP.op-w1Yu_aQ2diaovPxGO-QHaHa&w=512&h=512&rs=1&pid=ImgDetMain",
   },
   teams: [
     {
@@ -70,13 +70,13 @@ const data = {
       ],
     },
     {
-      title: "Models",
-      url: "#",
+      title: "User",
+      url: "/create",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Add User",
+          url: "/create",
         },
         {
           title: "Explorer",

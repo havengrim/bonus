@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import * as XLSX from "xlsx";
 import { AiOutlineCloudDownload } from "react-icons/ai";
+import { toast } from "react-toastify"; // Import toast for notifications
 
 interface EmployeeData {
   name: string;
@@ -76,6 +77,7 @@ export default function Page() {
     }));
     setData(newData);
     setIsCalculated(true); 
+    toast.success("SRI Calculation Successful!"); // Show success toast
   };
 
   const handleExport = () => {
@@ -149,7 +151,6 @@ export default function Page() {
                   onClick={handleCalculate}
                   disabled={data.length === 0}
                 >
-                 
                   <span>Calculate SRI</span>
                 </button>
               <button
@@ -181,7 +182,7 @@ export default function Page() {
                   {data.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="p-8 text-sm text-gray-800 dark:text-gray-200 text-center">
-                      <div className="flex items-center text-center rounded-lg h-full  dark:border-gray-700">
+                        <div className="flex items-center text-center rounded-lg h-full dark:border-gray-700">
                           <div className="flex flex-col w-full max-w-sm px-4 mx-auto">
                             <div className="p-3 mx-auto text-blue-500 bg-blue-100 rounded-full dark:bg-gray-800">
                               <svg
@@ -203,7 +204,6 @@ export default function Page() {
                               <p className="mt-2 text-gray-500 dark:text-gray-400">
                                 It looks like there are no employee details available at the moment. To get started, please upload an Excel file containing the employee information.
                               </p>
-                            
                           </div>
                         </div>
                       </td>
@@ -224,7 +224,7 @@ export default function Page() {
             </div>
 
             <div className="flex justify-between items-center mt-4">
-            <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-gray-700 dark:text-gray-300">
                 Page {currentPage} of {totalPages}
               </span>
               <div className="flex gap-2">

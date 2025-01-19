@@ -3,12 +3,15 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Middleware to parse JSON request body
+app.use(express.json());  // This is necessary for parsing JSON data from requests
+
+// Middleware to handle CORS and cache headers
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store'); // Ensure token is not cached
   res.set('Pragma', 'no-cache');
@@ -17,20 +20,16 @@ app.use((req, res, next) => {
 app.use(cors());  // Enable CORS
 
 // Database connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000  // Timeout after 30 seconds
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);  // Exit process with failure if connection fails
-  });
+  .catch(err => console.log('MongoDB connection error:', err));
+
+// Role schema and model
+const roleSchema = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
+});
 
 const Role = mongoose.model('Role', roleSchema);
-
-
 
 // Sequence schema and model to manage user ids
 const sequenceSchema = new mongoose.Schema({
@@ -59,7 +58,7 @@ const User = mongoose.model('User', userSchema);
 
 // Middleware to check if the user has admin rights
 const isAdmin = (req, res, next) => {
-  const userRole = req.user.role;  // Assume user info is attached to `req.user` (e.g., from a decoded JWT token)
+  const userRole = req.user.role;  // Assume user info is attached to req.user (e.g., from a decoded JWT token)
 
   if (userRole !== 'admin' && userRole !== 'super_admin') {
     return res.status(403).send('Access denied');
@@ -172,22 +171,38 @@ app.post('/login', async (req, res) => {
   res.json({ token });
 });
 
+app.get("/roles", async (req, res) => {
+  try {
+    const roles = await Role.find();  // Fetch all roles from the database
+    res.json(roles);  // Send the roles as the response
+  } catch (err) {
+    res.status(500).send("Error fetching roles");
+  }
+});
+// Logout route
+app.post('/logout', (req, res) => {
+  // As there is no server-side session with JWT, you just need to inform the client to remove the token
+  res.send('Logged out successfully');
+});
+
 // Protected route (only accessible by admin or super_admin)
 app.get('/admin', authenticate, isAdmin, (req, res) => {
   res.send('Welcome Admin');
 });
-
-app.get('/', (req, res) => {
-  res.send('Welcome to the API!');
-});
-
 
 // Example protected route that only the user can access
 app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
 
+// Catch-all for routes not authenticated (no token provided)
+//app.get('*', (req, res) => {
+ // res.status(401).send('Authentication required for this route');
+//});
+
 // Start the Express server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+

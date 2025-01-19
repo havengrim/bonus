@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify"; // Import toast
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AiFillApple } from "react-icons/ai"; // Apple icon
 import { FaGoogle, FaFacebook } from "react-icons/fa"; // Google and Meta (Facebook) icons
+
+import 'react-toastify/dist/ReactToastify.css'; // Import the Toastify styles
 
 interface LoginFormProps {
   className?: string;
@@ -27,7 +30,7 @@ export function LoginForm({
 
     // Simple validation for empty fields
     if (!username || !password) {
-      setError("Both fields are required");
+      toast.error("Both fields are required"); // Display error using Toastify
       return;
     }
 
@@ -46,15 +49,18 @@ export function LoginForm({
       if (response.ok) {
         // Handle successful login (e.g., store JWT in local storage)
         localStorage.setItem("token", data.token); // Store the JWT token in localStorage
+        toast.success("Successfully logged in!"); // Show success toast
         // Redirect user after successful login (e.g., to the dashboard)
         window.location.href = "/page"; // Update this to where you want to redirect the user
       } else {
         // Handle error (e.g., show message)
         setError(data.message || "Invalid credentials");
+        toast.error(data.message || "Invalid credentials"); // Show error toast
       }
     } catch (err) {
       console.error("Error during login:", err);
       setError("An error occurred while logging in");
+      toast.error("An error occurred while logging in"); // Show error toast
     }
   };
 

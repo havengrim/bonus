@@ -1,5 +1,3 @@
-"use client"
-
 import {
   BadgeCheck,
   Bell,
@@ -29,6 +27,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+
+// Handle logout
+const logout = () => {
+  // Remove the token from localStorage or sessionStorage
+  localStorage.removeItem('token');
+  // Optionally, redirect to login or home page
+  window.location.href = '/'; // You can change this URL to your login page
+};
 
 export function NavUser({
   user,
@@ -102,7 +108,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               <LogOut />
               Log out
             </DropdownMenuItem>
