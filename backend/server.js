@@ -4,13 +4,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
-const serverless = require('serverless-http');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.json());
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store'); // Ensure token is not cached
+  res.set('Pragma', 'no-cache');
+  next();
+});
 app.use(cors());  // Enable CORS
 
 // Database connection
@@ -175,5 +178,7 @@ app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
 
-// Export the serverless handler
-module.exports.handler = serverless(app);
+// Start the Express server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
