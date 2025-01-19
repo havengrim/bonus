@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
-const serverless = require('serverless-http'); // Import serverless-http
+const serverless = require('serverless-http');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
