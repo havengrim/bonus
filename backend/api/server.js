@@ -178,12 +178,7 @@ app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
 
-<<<<<<< HEAD:backend/server.js
 // Start the Express server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-=======
-// Export the serverless handler as the default export
-module.exports = serverless(app);  // Default export for Vercel compatibility
->>>>>>> 8308405dfef254867f075bfacee4219d53544b20:backend/api/server.js
