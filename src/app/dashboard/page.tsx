@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import * as XLSX from "xlsx";
-
+import { AiOutlineCloudDownload } from "react-icons/ai";
 
 interface EmployeeData {
   name: string;
@@ -105,11 +105,11 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">Building Your Application</BreadcrumbLink>
+                  <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbPage>SRI calculator</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -149,9 +149,7 @@ export default function Page() {
                   onClick={handleCalculate}
                   disabled={data.length === 0}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                 
                   <span>Calculate SRI</span>
                 </button>
               <button
@@ -163,9 +161,7 @@ export default function Page() {
                 onClick={handleExport}
                 disabled={!isCalculated}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
+                <AiOutlineCloudDownload className="h-6 w-6" />
                 <span>Export</span>
               </button>
             </div>
@@ -184,7 +180,33 @@ export default function Page() {
                 <tbody>
                   {data.length === 0 ? (
                     <tr>
-                      <td colSpan={3} className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 text-center">Upload an Excel file list of employees to get started</td>
+                      <td colSpan={3} className="p-8 text-sm text-gray-800 dark:text-gray-200 text-center">
+                      <div className="flex items-center text-center rounded-lg h-full  dark:border-gray-700">
+                          <div className="flex flex-col w-full max-w-sm px-4 mx-auto">
+                            <div className="p-3 mx-auto text-blue-500 bg-blue-100 rounded-full dark:bg-gray-800">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                />
+                              </svg>
+                            </div>
+                            <h1 className="mt-3 text-lg text-gray-800 dark:text-white">No Employee Details Found</h1>
+                              <p className="mt-2 text-gray-500 dark:text-gray-400">
+                                It looks like there are no employee details available at the moment. To get started, please upload an Excel file containing the employee information.
+                              </p>
+                            
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   ) : (
                     currentData.map((row, index) => (
