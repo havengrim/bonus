@@ -175,5 +175,5 @@ app.get('/user-profile', authenticate, (req, res) => {
   res.send('Welcome User');
 });
 
-// Export the serverless handler
-module.exports.handler = serverless(app);
+// Export the serverless handler as the default export
+module.exports = serverless(app);  // Default export for Vercel compatibility
